@@ -2,6 +2,8 @@
 /dist
 /node_modules
 .env
+docker-compose.yml
+postgres_data
 
 # Logs
 logs
