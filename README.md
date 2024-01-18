@@ -43,6 +43,18 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# docker compose
+$ docker-compose up -d service_name
+
+# getting into docker container
+$ docker-compose exec service_name bash
+
+# giving postgres everything to begin to work
+$ psql -h host_name -d database_name -U user_name
+
+# shutting down docker-compose (useful when you want to close backend local services)
+$ docker-compose down
 ```
 
 ## Test
