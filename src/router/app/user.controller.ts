@@ -1,14 +1,15 @@
 import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
 import { routerSchema } from './schemas/routes';
 import { RepositoryUserPersister } from '../adapters/drivens/repository-persister';
-import { User } from './schemas/user';
+import { PersistedUser, User } from 'src/repository/app/schemas/persisted-user';
+
 
 @Controller('users')
 export class UserController implements RepositoryUserPersister {
     constructor() {}
 
     @Get(routerSchema.users.allUsers)
-    async getUsers(): Promise<User[] | []> {
+    async getUsers(): Promise<PersistedUser[] | []> {
         try {
             const getAll = await new RepositoryUserPersister().getUsers();
             return getAll;
@@ -20,7 +21,7 @@ export class UserController implements RepositoryUserPersister {
     };
 
     @Get(routerSchema.users.oneUser)
-    async getUser(email: string): Promise<User | null> {
+    async getUser(email: string): Promise<PersistedUser | null> {
         try{
             const getOne = await new RepositoryUserPersister().getUser(email)
             return getOne
@@ -31,7 +32,7 @@ export class UserController implements RepositoryUserPersister {
     };
 
     @Post(routerSchema.users.createUser)
-    async createUser(user: User): Promise<User | null>{
+    async createUser(user: User): Promise<PersistedUser | null>{
         try{
             const createdUser = await new RepositoryUserPersister.createUser(user);
             return createdUser;
@@ -42,7 +43,7 @@ export class UserController implements RepositoryUserPersister {
     };
 
     @Put(routerSchema.users.updateUser)
-    async updateUser(email: string, user: User): Promise<User | null>{
+    async updateUser(email: string, user: User): Promise<PersistedUser | null>{
         try{
             const updatedUser = await new RepositoryUserPersister.updateUser(email, user);
             return updatedUser;
@@ -53,7 +54,7 @@ export class UserController implements RepositoryUserPersister {
     };
 
     @Delete(routerSchema.users.deleteUser)
-    async deleteUser(email: string): Promise<User | null> {
+    async deleteUser(email: string): Promise<PersistedUser | null> {
         try{
         const deletedUser = await new RepositoryUserPersister.deleteUser(email);
         return deletedUser;

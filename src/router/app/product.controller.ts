@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
-import { Product } from './schemas/product';
 import { RepositoryProductPersister } from '../adapters/drivens/repository-persister';
 import { routerSchema } from './schemas/routes';
+import { PersistedProduct, Product } from 'src/repository/app/schemas/persisted-product';
 
 @Controller('products')
 export class ProductController {
     constructor() {}
 
     @Get(routerSchema.products.allProducts)
-    async getProducts(): Promise<Product[] | []> {
+    async getProducts(): Promise<PersistedProduct[] | []> {
         try {
             const getAll = await new RepositoryProductPersister().getProducts();
             return getAll;
@@ -19,7 +19,7 @@ export class ProductController {
     };
 
     @Get(routerSchema.products.oneProduct)
-    async getProduct(id: number): Promise<Product | null> {
+    async getProduct(id: number): Promise<PersistedProduct | null> {
         try{
             const getOne = await new RepositoryProductPersister().getProduct(id);
             return getOne
@@ -30,7 +30,7 @@ export class ProductController {
     };
 
     @Post(routerSchema.products.createProduct)
-    async createProduct(product: Product): Promise<Product | null> {
+    async createProduct(product: Product): Promise<PersistedProduct | null> {
         try {
             const newProduct = await new RepositoryProductPersister().createProduct(product);
             return newProduct;
@@ -41,7 +41,7 @@ export class ProductController {
     };
 
     @Put(routerSchema.products.updateProduct)
-    async updateProduct(id: number, product: Product): Promise<Product | null> {
+    async updateProduct(id: number, product: Product): Promise<PersistedProduct | null> {
         try {
             const updatedProduct = await new RepositoryProductPersister().updateProduct(id, product)
             return updatedProduct
@@ -52,7 +52,7 @@ export class ProductController {
     };
     
     @Delete(routerSchema.products.deleteProduct)
-    async deleteProduct(id: number): Promise<Product | null> {
+    async deleteProduct(id: number): Promise<PersistedProduct | null> {
         try{
             const deletedProduct = await new RepositoryProductPersister().deleteProduct(id);
             return deletedProduct

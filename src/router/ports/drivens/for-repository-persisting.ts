@@ -1,19 +1,20 @@
-import { Product } from "src/router/app/schemas/product";
-import { User } from "src/router/app/schemas/user";
+import { PersistedProduct, Product } from "src/repository/app/schemas/persisted-product";
+import { PersistedUser, User } from "src/repository/app/schemas/persisted-user";
+
 
 export interface ForRepositoryUserPersisting {
-    getUsers(): Promise<User[] | []>;
-    getUser(email: string): Promise<User | null>;
-    createUser(user: User): Promise<User | null>;
-    updateUser(email: string, user: User): Promise<User | null>;
-    deleteUser(email: string): Promise<User | null>;
+    getUsers(): Promise<PersistedUser[] | []>;
+    getUser(email: string): Promise<PersistedUser | null>;
+    createUser(user: User): Promise<PersistedUser | null>;
+    updateUser(email: string, user: User): Promise<PersistedUser | null>;
+    deleteUser(email: string): Promise<PersistedUser | null>;
     
 };
 
 export interface ForRepositoryProductPersisting {
-    getProducts(): Promise<Product[] | []>;
-    getProduct(id:number): Promise<Product | null>;
-    createProduct(product:Product): Promise<Product | null>;
-    updateProduct(product: Product): Promise<Product | null>;
-    deleteProduct(id: number): Promise<Product | null>
+    getProducts(): Promise<PersistedProduct[] | []>;
+    getProduct(id:number): Promise<PersistedProduct | null>;
+    createProduct(product:Product): Promise<PersistedProduct | null>;
+    updateProduct(id: number, product: Product): Promise<PersistedProduct | null>;
+    deleteProduct(id: number): Promise<PersistedProduct | null>
 };
