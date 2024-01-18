@@ -11,6 +11,21 @@ export class RepositoryUserPersister implements ForRepositoryUserPersisting {
         return Promise.resolve(new RouterUserPersister().getUsers());
     };
 
+    getUser(email: string): Promise<User | null> {
+        return Promise.resolve(new RouterUserPersister().getUsers(email));
+    };
+
+    createUser(user:User): Promise<User | null> {
+        return Promise.resolve(new RouterUserPersister().createUser(user));
+    };
+    updateUser(email:string, user:User): Promise<User | null> {
+        return Promise.resolve(new RouterUserPersister().updateUser(email, user))
+    };
+
+    deleteUser(email: string): Promise<User | null> {
+        return Promise.resolve(new RouterUserPersister().deleteUser(email))
+    }
+
 }
 
 export class RepositoryProductPersister implements ForRepositoryProductPersisting {
@@ -19,5 +34,17 @@ export class RepositoryProductPersister implements ForRepositoryProductPersistin
     getProducts(): Promise<Product[] | []> {
         return Promise.resolve(new RouterProductPersister().getProducts());
     };
+    getProduct(id: number): Promise<Product | null> {
+        return Promise.resolve(new RouterProductPersister().getProduct(id));
+    };
+    createProduct(product: Product): Promise<Product | null> {
+        return Promise.resolve(new RouterProductPersister().createProduct(product));
+    };
+    updateProduct(id: number, product: Product): Promise<Product | null> {
+        return Promise.resolve(new RouterProductPersister().updateProduct(id, product));
+    };
+    deleteProduct(id:number): Promise<Product | null> {
+        return Promise.resolve(new RouterProductPersister().deleteProduct(id));
+    }
 
 };
