@@ -1,7 +1,6 @@
 import { RouterProductPersister, RouterUserPersister } from "src/repository/adapters/drivers/router-persister";
 import { PersistedProduct, Product } from "src/repository/app/schemas/persisted-product";
 import { PersistedUser, User } from "src/repository/app/schemas/persisted-user";
-
 import { ForRepositoryProductPersisting, ForRepositoryUserPersisting } from "src/router/ports/drivens/for-repository-persisting";
 
 

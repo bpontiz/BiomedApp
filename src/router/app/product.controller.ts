@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { RepositoryProductPersister } from '../adapters/drivens/repository-persister';
 import { routerSchema } from './schemas/routes';
 import { PersistedProduct, Product } from 'src/repository/app/schemas/persisted-product';
@@ -19,7 +19,7 @@ export class ProductController {
     };
 
     @Get(routerSchema.products.oneProduct)
-    async getProduct(id: number): Promise<PersistedProduct | null> {
+    async getProduct(@Param(`id`) id: number): Promise<PersistedProduct | null> {
         try{
             const getOne = await new RepositoryProductPersister().getProduct(id);
             return getOne
@@ -30,7 +30,7 @@ export class ProductController {
     };
 
     @Post(routerSchema.products.createProduct)
-    async createProduct(product: Product): Promise<PersistedProduct | null> {
+    async createProduct(@Body() product: Product): Promise<PersistedProduct | null> {
         try {
             const newProduct = await new RepositoryProductPersister().createProduct(product);
             return newProduct;
@@ -41,7 +41,7 @@ export class ProductController {
     };
 
     @Put(routerSchema.products.updateProduct)
-    async updateProduct(id: number, product: Product): Promise<PersistedProduct | null> {
+    async updateProduct(@Param(`id`) id: number,@Body() product: Product): Promise<PersistedProduct | null> {
         try {
             const updatedProduct = await new RepositoryProductPersister().updateProduct(id, product)
             return updatedProduct
@@ -52,7 +52,7 @@ export class ProductController {
     };
     
     @Delete(routerSchema.products.deleteProduct)
-    async deleteProduct(id: number): Promise<PersistedProduct | null> {
+    async deleteProduct(@Param(`id`) id: number): Promise<PersistedProduct | null> {
         try{
             const deletedProduct = await new RepositoryProductPersister().deleteProduct(id);
             return deletedProduct
