@@ -1,17 +1,20 @@
-import { Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body } from '@nestjs/common';
 import { routerSchema } from './schemas/routes';
-import { RepositoryUserPersister } from '../adapters/drivens/repository-persister';
 import { PersistedUser, User } from 'src/repository/app/schemas/persisted-user';
+import { ForRepositoryUserPersisting } from '../ports/drivens/for-repository-persisting';
+import { RouterUserPersister } from 'src/repository/adapters/drivers/router-persister';
 
 
 @Controller('users')
-export class UserController implements RepositoryUserPersister {
-    constructor() {}
+export class UserController implements ForRepositoryUserPersisting {
+    constructor(
+        private routerUserPersister: RouterUserPersister
+    ) {}
 
     @Get(routerSchema.users.allUsers)
     async getUsers(): Promise<PersistedUser[] | []> {
         try {
-            const getAll = await new RepositoryUserPersister().getUsers();
+            const getAll = await this.routerUserPersister.getUsers();
             return getAll;
         }
         catch (error){
@@ -23,7 +26,7 @@ export class UserController implements RepositoryUserPersister {
     @Get(routerSchema.users.oneUser)
     async getUser(email: string): Promise<PersistedUser | null> {
         try{
-            const getOne = await new RepositoryUserPersister().getUser(email)
+            const getOne = await this.routerUserPersister.getUser(email);
             return getOne
         } catch (error) {
             console.log(`One users could not be found ${routerSchema.users.oneUser}`, error)
@@ -32,9 +35,9 @@ export class UserController implements RepositoryUserPersister {
     };
 
     @Post(routerSchema.users.createUser)
-    async createUser(user: User): Promise<PersistedUser | null>{
+    async createUser(@Body() user: User): Promise<PersistedUser | null>{
         try{
-            const createdUser = await new RepositoryUserPersister.createUser(user);
+            const createdUser = await this.routerUserPersister.createUser(user);
             return createdUser;
         } catch (error) {
             console.log(`Could not create user in path ${routerSchema.users.createUser}`, error)
@@ -45,7 +48,7 @@ export class UserController implements RepositoryUserPersister {
     @Put(routerSchema.users.updateUser)
     async updateUser(email: string, user: User): Promise<PersistedUser | null>{
         try{
-            const updatedUser = await new RepositoryUserPersister.updateUser(email, user);
+            const updatedUser = await this.routerUserPersister.updateUser(email, user);
             return updatedUser;
         } catch (error) {
             console.log(`Could not update user in path ${routerSchema.users.updateUser}`, error)
@@ -56,7 +59,7 @@ export class UserController implements RepositoryUserPersister {
     @Delete(routerSchema.users.deleteUser)
     async deleteUser(email: string): Promise<PersistedUser | null> {
         try{
-        const deletedUser = await new RepositoryUserPersister.deleteUser(email);
+        const deletedUser = await this.routerUserPersister.deleteUser(email);
         return deletedUser;
         } catch (error) {
             console.log(`The user  could not be deleted ${routerSchema.users.deleteUser}`, error)

@@ -4,6 +4,7 @@
 .env
 docker-compose.yml
 postgres_data
+ormconfig.json
 
 # Logs
 logs

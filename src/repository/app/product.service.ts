@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PersistedProduct, Product } from './schemas/persisted-product';
+import { RouterProductPersister } from '../adapters/drivers/router-persister';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
-export class ProductService {
-    constructor(
-        @InjectRepository(ProductEntity) private productEntity: Repository<ProductEntity>
-    ) {}
+export class ProductService implements RouterProductPersister {
+    constructor() {}
+
+    @InjectRepository(ProductEntity)
+    private productEntity: Repository<ProductEntity>;
 
     async getProducts(): Promise<PersistedProduct[] | []> {
         try {
