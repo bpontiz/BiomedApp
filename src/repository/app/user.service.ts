@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { RouterUserPersister } from '../adapters/drivers/router-persister';
 import { PersistedUser, User } from './schemas/persisted-user';
-import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
-import bcrypt from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class UserService implements RouterUserPersister {
+export class UserService {
     constructor(
         @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>
-    ) {}
+    ){}
 
     async getUsers(): Promise<PersistedUser[] | []> {
         try {
@@ -18,7 +17,8 @@ export class UserService implements RouterUserPersister {
 
             return Userdb;
         }
-        catch {
+        catch (err){
+            console.log(err)
             return [];
         }
     };
@@ -55,7 +55,8 @@ export class UserService implements RouterUserPersister {
 
             return UserDb;
         }
-        catch {
+        catch (err){
+            console.log(err)
             return null;
         }
     };

@@ -1,16 +1,19 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { RepositoryProductPersister } from '../adapters/drivens/repository-persister';
 import { routerSchema } from './schemas/routes';
 import { PersistedProduct, Product } from 'src/repository/app/schemas/persisted-product';
+import { ForRepositoryProductPersisting } from '../ports/drivens/for-repository-persisting';
+import { RouterProductPersister } from 'src/repository/adapters/drivers/router-persister';
 
 @Controller('products')
-export class ProductController {
-    constructor() {}
+export class ProductController implements ForRepositoryProductPersisting {
+    constructor(
+        private routerProductPersister: RouterProductPersister
+    ) {}
 
     @Get(routerSchema.products.allProducts)
     async getProducts(): Promise<PersistedProduct[] | []> {
         try {
-            const getAll = await new RepositoryProductPersister().getProducts();
+            const getAll = await this.routerProductPersister.getProducts();
             return getAll;
         } catch (error) {
             console.log(`Cannot get all products when requiring ${routerSchema.products.allProducts}`, error)
@@ -21,7 +24,7 @@ export class ProductController {
     @Get(routerSchema.products.oneProduct)
     async getProduct(@Param(`id`) id: number): Promise<PersistedProduct | null> {
         try{
-            const getOne = await new RepositoryProductPersister().getProduct(id);
+            const getOne = await this.routerProductPersister.getProduct(id);
             return getOne
         } catch (error) {
             console.log(`Cannot get the product when you require ${routerSchema.products.oneProduct}`, error);
@@ -32,7 +35,7 @@ export class ProductController {
     @Post(routerSchema.products.createProduct)
     async createProduct(@Body() product: Product): Promise<PersistedProduct | null> {
         try {
-            const newProduct = await new RepositoryProductPersister().createProduct(product);
+            const newProduct = await this.routerProductPersister.createProduct(product);
             return newProduct;
         } catch (error) {
             console.log(`The product cannot be created in the router ${routerSchema.products.createProduct}`, error);
@@ -43,7 +46,7 @@ export class ProductController {
     @Put(routerSchema.products.updateProduct)
     async updateProduct(@Param(`id`) id: number,@Body() product: Product): Promise<PersistedProduct | null> {
         try {
-            const updatedProduct = await new RepositoryProductPersister().updateProduct(id, product)
+            const updatedProduct = await this.routerProductPersister.updateProduct(id, product)
             return updatedProduct
         } catch (error) {
             console.log(`Unable to update the product on the route ${routerSchema.products.updateProduct}`, error);
@@ -54,7 +57,7 @@ export class ProductController {
     @Delete(routerSchema.products.deleteProduct)
     async deleteProduct(@Param(`id`) id: number): Promise<PersistedProduct | null> {
         try{
-            const deletedProduct = await new RepositoryProductPersister().deleteProduct(id);
+            const deletedProduct = await this.routerProductPersister.deleteProduct(id);
             return deletedProduct
         } catch (error) {
             console.log(`The product could not be deleted ${routerSchema.products.deleteProduct}`, error);

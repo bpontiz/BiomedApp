@@ -3,7 +3,6 @@ import { UserModule } from './modules/user.module';
 import { ProductModule } from './modules/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { UserEntity } from './repository/app/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,7 +16,7 @@ import { UserEntity } from './repository/app/entities/user.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserEntity],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       retryDelay: 2000,
       retryAttempts: 10,
       synchronize: false,
