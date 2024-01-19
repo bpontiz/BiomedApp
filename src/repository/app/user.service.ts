@@ -13,7 +13,7 @@ export class UserService {
 
     async getUsers(): Promise<PersistedUser[] | []> {
         try {
-            const Userdb = this.userEntity.find();
+            const Userdb = await this.userEntity.find();
 
             return Userdb;
         }
