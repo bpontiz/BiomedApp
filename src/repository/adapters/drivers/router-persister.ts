@@ -33,27 +33,30 @@ export class RouterUserPersister implements ForUserPersisting {
 
 };
 
+@Injectable()
 export class RouterProductPersister implements ForProductPersisting {
-    constructor() {}    
+    constructor(
+        private productService: ProductService
+    ) {}    
 
     async getProducts(): Promise<PersistedProduct[] | []> {
-        return Promise.resolve(new ProductService().getProducts());
+        return Promise.resolve(this.productService.getProducts());
     };
 
     getProduct(id: number): Promise<PersistedProduct | null> {
-        return Promise.resolve(new ProductService().getProduct(id));
+        return Promise.resolve(this.productService.getProduct(id));
     };
 
     createProduct(product: Product): Promise<PersistedProduct | null> {
-        return Promise.resolve(new ProductService().createProduct(product));
+        return Promise.resolve(this.productService.createProduct(product));
     };
 
     updateProduct(id: number, product: Product): Promise<PersistedProduct | null> {
-        return Promise.resolve(new ProductService().updateProduct(id, product));
+        return Promise.resolve(this.productService.updateProduct(id, product));
     };
 
     deleteProduct(id: number): Promise<PersistedProduct | null> {
-        return Promise.resolve(new ProductService().deleteProduct(id));
+        return Promise.resolve(this.productService.deleteProduct(id));
     };
 
 };
