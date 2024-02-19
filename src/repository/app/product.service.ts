@@ -49,7 +49,8 @@ export class ProductService {
 
             return ProductDb;
         }
-        catch {
+        catch (err) {
+            console.log(err)
             return null;
         }
     };

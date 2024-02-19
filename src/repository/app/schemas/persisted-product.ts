@@ -10,5 +10,7 @@ export interface PersistedProduct {
     last_service: string;
     next_service: string;
     description: string;
+    image: string;
+    area: string;
     timestamp: string
 };
